@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 
 # Function to set the background image
+# Function to set the background image
+# Function to set the background image
 def set_background(image_file):
     st.markdown(
         f"""
@@ -27,14 +29,16 @@ def set_background(image_file):
         .uploadedFile {{
             color: white !important;
             font-size: 14px;
+            text-align: left;
         }}
         .stFileUploader div {{
-            color: inherit !important; /* Restore default color for Drag and drop file here */
+            text-align: center;
         }}
         </style>
         """,
         unsafe_allow_html=True
     )
+
 
 # Function to load and encode the background image
 def load_background(image_path):
@@ -45,9 +49,8 @@ def load_background(image_path):
 
     return encoded
 
-
-# Set the background using the relative path
-bg_image = load_background("background.png")
+# Set the background using the full path
+bg_image = load_background("C:/Users/noga/PycharmProjects/pythonProject/Join non-delivered with CS owner App/background.png")
 set_background(bg_image)
 
 # App Title
@@ -86,12 +89,18 @@ if non_deliverable_file and report_file:
             st.write("Preview of the joined file:")
             st.dataframe(joined_df)
 
+            # Use BytesIO to save the Excel file to memory
+            from io import BytesIO
+            buffer = BytesIO()
+            with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
+                joined_df.to_excel(writer, index=False)
+            buffer.seek(0)
+
             # Provide download link
             st.subheader("Download the Joined File")
-            joined_file = joined_df.to_excel(index=False, engine='openpyxl')
             st.download_button(
                 label="Download Joined File",
-                data=joined_file,
+                data=buffer,
                 file_name="joined_file.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             )
