@@ -50,7 +50,7 @@ def load_background(image_path):
     return encoded
 
 # Set the background using the full path
-bg_image = load_background("C:/Users/noga/PycharmProjects/pythonProject/Join non-delivered with CS owner App/background.png")
+bg_image = load_background("background.png")
 set_background(bg_image)
 
 # App Title
